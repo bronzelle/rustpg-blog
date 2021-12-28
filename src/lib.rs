@@ -24,7 +24,9 @@ impl DraftPost {
     }
 
     pub fn request_review(self) -> PendingReview {
-        PendingReview { content: self.content}
+        PendingReview {
+            content: self.content,
+        }
     }
 }
 
@@ -34,6 +36,10 @@ pub struct PendingReview {
 
 impl PendingReview {
     pub fn approve(self) -> Post {
-        Post { content: self.content }
+        return Post { content: self.content };
+    }
+
+    pub fn reprove(self) -> DraftPost {
+        DraftPost { content: self.content }
     }
 }
