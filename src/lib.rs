@@ -26,20 +26,30 @@ impl DraftPost {
     pub fn request_review(self) -> PendingReview {
         PendingReview {
             content: self.content,
+            approvals: 0,
         }
     }
 }
 
 pub struct PendingReview {
     content: String,
+    approvals: i32,
 }
 
 impl PendingReview {
-    pub fn approve(self) -> Post {
-        return Post { content: self.content };
+    pub fn approve(mut self) -> Result<Post, PendingReview> {
+        self.approvals = self.approvals + 1;
+        if self.approvals > 1 {
+            return Ok(Post {
+                content: self.content,
+            });
+        }
+        Err(self)
     }
 
     pub fn reprove(self) -> DraftPost {
-        DraftPost { content: self.content }
+        DraftPost {
+            content: self.content,
+        }
     }
 }
